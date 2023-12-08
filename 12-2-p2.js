@@ -7,7 +7,6 @@
 
 /* Data structure */
 // Reads in the data from the text file
-const { count } = require('console');
 const fs = require('fs');
 const inputData = fs.readFileSync('12-2.txt', 'utf8');
 

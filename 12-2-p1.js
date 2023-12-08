@@ -7,7 +7,6 @@
 
 /* Data structure */
 // Reads in the data from the text file
-const { count } = require('console');
 const fs = require('fs');
 const inputData = fs.readFileSync('12-2.txt', 'utf8');
 
@@ -105,7 +104,7 @@ function extractGameNumber(line) {
         return 0;
     }
     const gameNumber = line.match(/Game\s(\d+)/)[1];
-    
+
     //console.log('Game number is: ' + gameNumber);
     return gameNumber;
 }
