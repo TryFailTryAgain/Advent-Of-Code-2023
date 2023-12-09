@@ -102,25 +102,25 @@ function captureEntireNum(schematic, x, y) {
     // Converts the string to a number
     //console.log(numString);
     num = parseInt(numString);
-    
+
     return num;
 }
 
 // Takes the array of number positions around a gear, captures the entire number, and checks if it is a valid gear
 // Returns the gear ratio if it is valid, 0 otherwise
-function isValidGear(schematic, positions){
+function isValidGear(schematic, positions) {
     let gearRatio = 0;
     let gearNums = [];
     positions.forEach((pos) => {
         // If the number is null, then it has already been counted
         let capturedNum = captureEntireNum(schematic, pos[0], pos[1]);
-        if( capturedNum != null)
+        if (capturedNum != null)
             gearNums.push(capturedNum);
     });
 
     //console.log(gearNums);
     // Checks if the gear ratio is valid
-    if (gearNums.length == 2){
+    if (gearNums.length == 2) {
         gearRatio = gearNums[0] * gearNums[1];
     }
     console.log('Gear Ratio: ' + gearRatio);
