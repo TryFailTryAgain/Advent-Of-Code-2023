@@ -9,15 +9,17 @@
 // Reads in the data from the text file
 const fs = require('fs');
 const inputData = fs.readFileSync('12-8.txt', 'utf8');
+const testData = fs.readFileSync('12-8-testing.txt', 'utf8');
 // Split the data into each section
 let data = inputData.split('\n');
+let testingData = testData.split('\n');
 
 /* End Data structure */
 
 
 /* Main */
 solveP1(data);
-
+solveP2(data);
 /* End Main */
 
 
@@ -57,11 +59,19 @@ function addNode(map, key, left, right) {
 }
 
 // Navigates the map we constructed using the directions provided by the path
-function navigateMap(map, path, startNode) {
+function navigateMap(map, path, startNode, endSequence) {
     let currentNode = startNode;
     let pathIndex = 0;
+
+    // Create a regex based on endSequence
+    let endSequenceRegex;
+    if (endSequence.length < 3) {
+        endSequenceRegex = new RegExp('.'.repeat(3 - endSequence.length) + endSequence);
+    } else {
+        endSequenceRegex = new RegExp(endSequence);
+    }
     // As long as the current node isn't the end node, keep going
-    while (currentNode !== 'ZZZ') {
+    while (!currentNode.match(endSequenceRegex)) {
         // The current direction is the index we are on modulo the length of the path. This allows 
         //   us to loop through the path repeatedly while keeping track of how many steps we've taken
         let direction = path[pathIndex % path.length];
@@ -77,16 +87,41 @@ function navigateMap(map, path, startNode) {
     return pathIndex;
 }
 
+// Finds the least common multiple of an array of numbers
+function lcm(arr) {
+    function gcd(a, b) {
+        if (b === 0) return a;
+        return gcd(b, a % b);
+    }
+    let res = arr[0];
+
+    for (let i = 1; i < arr.length; i++) {
+        res = (res * arr[i]) / gcd(res, arr[i]);
+    }
+
+    //console.log(res);
+    return res;
+}
+
 function solveP1(data) {
     // Builds a map object
-    let fullMap = {};
-    path = extractPath(data);
-    fullMap = extractNodes(data);
-    const totalSteps = navigateMap(fullMap, path, 'AAA');
+    const path = extractPath(data);
+    const fullMap = extractNodes(data);
+    const totalSteps = navigateMap(fullMap, path, 'AAA', 'ZZZ');
+
     console.log('Total steps taken for Part 1: ' + totalSteps);
 }
 
 function solveP2() {
+    // Builds a map object
+    const path = extractPath(data);
+    const fullMap = extractNodes(data);
+    // Gets all the 'A' starting nodes
+    const startNodes = Object.keys(fullMap).filter(key => key.match(/..A/g));
+    // Finds each starting nodes steps to 'Z' individually and returns an array of those values
+    const stepsToEachZ = startNodes.map(node => navigateMap(fullMap, path, node, 'Z'));
 
+    // Finds the least common multiple of each number of steps to 'Z' from each starting node
+    console.log('Total steps taken for Part 2: ' + lcm(stepsToEachZ));
 }
 /* End Functions */
