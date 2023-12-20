@@ -16,14 +16,24 @@ let data = inputData.split('\n');
 
 
 /* Main */
-let sumOfExtrapolation = 0;
+let sumOfExtrapolationP1 = 0;
 data.forEach(line => {
     if (line == '') return;
     line = line.split(' ').map(Number);
-    sumOfExtrapolation += predictNext(line);
+    sumOfExtrapolationP1 += predictNext(line);
 });
 
-console.log('Part 1 sum: ' + sumOfExtrapolation);
+console.log('Part 1 sum: ' + sumOfExtrapolationP1);
+
+let sumOfExtrapolationP2 = 0;
+// Do the same as before, but reverse the order of the numbers for each history to get FORWARD extrapolation
+data.forEach(line => {
+    if (line == '') return;
+    line = line.split(' ').map(Number).reverse();
+    sumOfExtrapolationP2 += predictNext(line);
+});
+
+console.log('Part 2 sum: ' + sumOfExtrapolationP2);
 
 /* End Main */
 
@@ -39,6 +49,7 @@ function calcDiffs(history) {
     return diffs;
 }
 
+// Predicts the next value in the sequence
 function predictNext(line) {
     let nextDiffs = line;
     let toAddBack = [];
