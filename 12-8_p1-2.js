@@ -9,10 +9,8 @@
 // Reads in the data from the text file
 const fs = require('fs');
 const inputData = fs.readFileSync('12-8.txt', 'utf8');
-const testData = fs.readFileSync('12-8-testing.txt', 'utf8');
 // Split the data into each section
 let data = inputData.split('\n');
-let testingData = testData.split('\n');
 
 /* End Data structure */
 
